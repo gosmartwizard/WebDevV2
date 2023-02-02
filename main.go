@@ -47,5 +47,5 @@ func (router Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func main() {
 	var router Router
 	fmt.Println("Starting the server on :3000...")
-	http.ListenAndServe(":3000", http.HandlerFunc(pathHandler))
+	http.ListenAndServe(":3000", router)
 }
