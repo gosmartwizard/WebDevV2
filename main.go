@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 )
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
@@ -42,13 +43,24 @@ func faqHandler(w http.ResponseWriter, r *http.Request) {
 `)
 }
 
+func paramsHandler(w http.ResponseWriter, r *http.Request) {
+
+	galleryID := chi.URLParam(r, "galleryID")
+
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
+	fmt.Fprint(w, "Got the galleryID : ", galleryID)
+}
+
 func main() {
 
 	r := chi.NewRouter()
-
+	//r.Use(middleware.Logger)
 	r.Get("/", homeHandler)
 	r.Get("/contact", contactHandler)
 	r.Get("/faq", faqHandler)
+
+	r.With(middleware.Logger).Get("/galleries/{galleryID}", paramsHandler)
 
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Page not found", http.StatusNotFound)
