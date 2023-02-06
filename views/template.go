@@ -13,7 +13,7 @@ func Parse(filepath string) (Template, error) {
 	if err != nil {
 		return Template{}, fmt.Errorf("parsing template: %w", err)
 	}
-	
+
 	return Template{
 		htmlTpl: htmlTpl,
 	}, nil
@@ -33,4 +33,11 @@ func (t Template) Execute(w http.ResponseWriter, data interface{}) {
 		http.Error(w, "There was an error executing the template.", http.StatusInternalServerError)
 		return
 	}
+}
+
+func Must(t Template, err error) Template {
+	if err != nil {
+		panic(err)
+	}
+	return t
 }
