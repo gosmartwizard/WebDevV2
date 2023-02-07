@@ -24,7 +24,7 @@ func main() {
 
 	tpl, err = views.ParseFS(templates.FS, "faq.gohtml")
 	views.Must(tpl, err)
-	r.Get("/faq", controllers.StaticHandler(tpl))
+	r.Get("/faq", controllers.FAQ(tpl))
 
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Page not found", http.StatusNotFound)
