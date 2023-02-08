@@ -14,15 +14,15 @@ func main() {
 
 	r := chi.NewRouter()
 
-	tpl, err := views.ParseFS(templates.FS, "layout-page.gohtml", "home-page.gohtml")
+	tpl, err := views.ParseFS(templates.FS, "home.gohtml", "tailwind.gohtml")
 	views.Must(tpl, err)
 	r.Get("/", controllers.StaticHandler(tpl))
 
-	tpl, err = views.ParseFS(templates.FS, "layout-page.gohtml", "contact-page.gohtml")
+	tpl, err = views.ParseFS(templates.FS, "contact.gohtml", "tailwind.gohtml")
 	views.Must(tpl, err)
 	r.Get("/contact", controllers.StaticHandler(tpl))
 
-	tpl, err = views.ParseFS(templates.FS, "faq.gohtml")
+	tpl, err = views.ParseFS(templates.FS, "faq.gohtml", "tailwind.gohtml")
 	views.Must(tpl, err)
 	r.Get("/faq", controllers.FAQ(tpl))
 
