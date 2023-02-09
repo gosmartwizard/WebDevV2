@@ -31,6 +31,7 @@ func main() {
 	var usersC controllers.Users
 	usersC.Templates.New = tpl
 	r.Get("/signup", usersC.New)
+	r.Post("/signup", usersC.Create)
 
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Page not found", http.StatusNotFound)
