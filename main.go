@@ -6,6 +6,7 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/gosmartwizard/WebDevV2/controllers"
+	"github.com/gosmartwizard/WebDevV2/models"
 	"github.com/gosmartwizard/WebDevV2/templates"
 	"github.com/gosmartwizard/WebDevV2/views"
 )
@@ -28,7 +29,25 @@ func main() {
 
 	tpl, err = views.ParseFS(templates.FS, "signup.gohtml", "tailwind.gohtml")
 	views.Must(tpl, err)
-	var usersC controllers.Users
+
+	// Setup a database connection
+	cfg := models.DefaultPostgresConfig()
+	db, err := models.Open(cfg)
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	// Setup our model services
+	userService := models.UserService{
+		DB: db,
+	}
+
+	// Setup our controllers
+	usersC := controllers.Users{
+		UserService: &userService,
+	}
+
 	usersC.Templates.New = tpl
 	r.Get("/signup", usersC.New)
 	r.Post("/signup", usersC.Create)
